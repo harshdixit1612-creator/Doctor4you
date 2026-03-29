@@ -18,22 +18,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 🔥 PATH SETUP
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# 🔥 FRONTEND PATHS
+FRONTEND_STATIC = os.path.abspath(os.path.join(BASE_DIR, "../Doctor4you frontend/static"))
+FRONTEND_HTML = os.path.abspath(os.path.join(BASE_DIR, "../Doctor4you frontend/templates/index.html"))
 
-# 🔥 MOUNT STATIC
-app.mount(
-    "/static",
-    StaticFiles(directory=os.path.join(BASE_DIR, "../Doctor4you frontend/static")),
-    name="static"
-)
+# 🔥 MOUNT STATIC (Only if it exists locally)
+if os.path.exists(FRONTEND_STATIC):
+    app.mount(
+        "/static",
+        StaticFiles(directory=FRONTEND_STATIC),
+        name="static"
+    )
 
-# 🔥 SERVE FRONTEND
+# 🔥 SERVE FRONTEND OR HEALTHCHECK
 @app.get("/")
 def serve_frontend():
-    return FileResponse(
-        os.path.join(BASE_DIR, "../Doctor4you frontend/templates/index.html")
-    )
+    if os.path.exists(FRONTEND_HTML):
+        return FileResponse(FRONTEND_HTML)
+    return {"status": "ok", "message": "Doctor4you API is running", "environment": "production"}
 
 # ─── AI Models ────────────────────────────────────────────────────────────────
 
