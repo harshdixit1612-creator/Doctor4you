@@ -1,0 +1,140 @@
+{
+  "day_1": {
+    "input": "bodypain,fever",
+    "entities": {
+      "symptoms": [
+        "body",
+        "##pain",
+        ",",
+        "fever"
+      ],
+      "body_parts": [],
+      "medications": [],
+      "diseases": []
+    },
+    "diagnosis": {
+      "condition": "Viral Fever / Influenza",
+      "matched_profiles": [
+        "viral_fever"
+      ],
+      "medicines": [
+        {
+          "name": "Paracetamol 650mg",
+          "reason": "Reduces fever and relieves body pain",
+          "dose": "Every 6-8 hrs after food. Max 4 doses/day"
+        },
+        {
+          "name": "ORS Sachet (Electral)",
+          "reason": "Replenishes electrolytes lost from sweating",
+          "dose": "1 sachet in 1L water, sip throughout day"
+        },
+        {
+          "name": "Ibuprofen 400mg",
+          "reason": "Anti-inflammatory for chills and body ache",
+          "dose": "Every 8 hrs strictly after food"
+        },
+        {
+          "name": "Vitamin C 500mg",
+          "reason": "Boosts immune response against viral load",
+          "dose": "Once daily after breakfast"
+        }
+      ],
+      "diet": [
+        "warm khichdi",
+        "dal soup",
+        "coconut water",
+        "warm turmeric milk",
+        "boiled vegetables"
+      ],
+      "avoid": [
+        "cold drinks",
+        "oily food",
+        "outside food",
+        "dairy products"
+      ],
+      "warning": "Seek doctor if fever exceeds 103F / 39.4C or lasts more than 3 days",
+      "activity": "complete bed rest"
+    },
+    "answers": {
+      "1. 1. How long have you had these symptoms exactly?": "python -u \"d:\\health_tracker\\main.py\"",
+      "2. 2. Have you measured your temperature? What was the reading?": "67",
+      "3. 3. Are you experiencing any additional symptoms like cough, nausea or rash?": "5",
+      "4. 4. Have you been in contact with anyone recently who was sick?": "5"
+    },
+    "progress": {
+      "score": 0,
+      "trend": "baseline",
+      "summary": "Day 1 baseline set."
+    }
+  },
+  "day_2": {
+    "input": "skinredness,vomiting,headach",
+    "entities": {
+      "symptoms": [
+        "skin",
+        "##ness",
+        "vomiting",
+        "headach"
+      ],
+      "body_parts": [],
+      "medications": [],
+      "diseases": []
+    },
+    "diagnosis": {
+      "condition": "Gastroenteritis / Digestive Upset",
+      "matched_profiles": [
+        "gastro"
+      ],
+      "medicines": [
+        {
+          "name": "ORS Sachet (Electral)",
+          "reason": "Critical \u2014 prevents dehydration from vomiting/diarrhea",
+          "dose": "Sip slowly every 15-20 min throughout day"
+        },
+        {
+          "name": "Domperidone 10mg",
+          "reason": "Controls nausea and vomiting reflex",
+          "dose": "30 min before meals, 3 times daily"
+        },
+        {
+          "name": "Zinc 20mg tablet",
+          "reason": "Speeds up gut recovery in diarrhea",
+          "dose": "Once daily for 10-14 days"
+        },
+        {
+          "name": "Probiotics (Darolac)",
+          "reason": "Restores good gut bacteria balance",
+          "dose": "Once daily after any meal"
+        }
+      ],
+      "diet": [
+        "BRAT diet (banana, rice, apple, toast)",
+        "plain boiled rice",
+        "clear soup",
+        "coconut water",
+        "sips of plain water"
+      ],
+      "avoid": [
+        "dairy",
+        "spicy food",
+        "oily food",
+        "raw vegetables",
+        "fruit juice",
+        "caffeine"
+      ],
+      "warning": "Seek doctor if vomiting persists more than 24 hrs, blood in stool, or signs of severe dehydration",
+      "activity": "complete rest, do not travel or exert"
+    },
+    "answers": {
+      "1. Which symptom has gotten significantly worse since yesterday?": "vomiting",
+      "2. Have any new symptoms appeared that were not there before?": "no",
+      "3. Have you been able to eat or drink anything today?": "no",
+      "4. Is your fever higher than it was yesterday?": "yes"
+    },
+    "progress": {
+      "score": 39,
+      "trend": "same",
+      "summary": "NLI confidence: 0.96 | Label: neutral"
+    }
+  }
+}

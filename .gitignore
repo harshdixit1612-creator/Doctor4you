@@ -1,0 +1,46 @@
+# ===== Python =====
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+.eggs/
+dist/
+build/
+.env
+.env.*
+*.log
+
+# ===== AI / ML Models =====
+*.pt
+*.pth
+*.bin
+*.onnx
+*.safetensors
+*.ckpt
+# HuggingFace model cache
+.cache/
+models/__pycache__/
+
+# ===== Temp / OCR working files =====
+*.tmp
+tmp/
+temp/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== IDE / Editor =====
+.vscode/
+.idea/
+*.suo
+*.user
+*.swp
+*.swo
+
+# ===== Node (if ever used) =====
+node_modules/

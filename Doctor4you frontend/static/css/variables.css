@@ -1,0 +1,90 @@
+/* ===== Design Tokens (Dark Futuristic Theme) ===== */
+:root {
+  /* Primary Palette — Neon Cyan/Blue */
+  --primary: #00a8ff;
+  --primary-dark: #0088cc;
+  --primary-light: rgba(0, 168, 255, 0.12);
+  --primary-gradient: linear-gradient(135deg, #00a8ff 0%, #00c8ff 100%);
+
+  /* Accent — Neon Green */
+  --accent: #00ffc8;
+  --accent-light: rgba(0, 255, 200, 0.1);
+
+  /* Semantic Colors */
+  --success: #00ffc8;
+  --warning: #ffa502;
+  --danger: #ff4757;
+  --info: #00a8ff;
+
+  /* Dark Neutrals */
+  --bg: #050a18;
+  --bg-alt: #0a1128;
+  --card-bg: rgba(10, 17, 40, 0.85);
+  --card-bg-glass: rgba(10, 17, 40, 0.6);
+  --card-bg-solid: #0d1530;
+  --sidebar-bg: #070e22;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-light: rgba(255, 255, 255, 0.05);
+
+  /* Text */
+  --text: #e8ecf4;
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --text-muted: rgba(255, 255, 255, 0.35);
+  --text-inverse: #050a18;
+
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-xs: 0.75rem;
+  --font-sm: 0.8125rem;
+  --font-base: 0.875rem;
+  --font-md: 1rem;
+  --font-lg: 1.125rem;
+  --font-xl: 1.25rem;
+  --font-2xl: 1.5rem;
+  --font-3xl: 1.875rem;
+  --font-4xl: 2.25rem;
+
+  /* Weight */
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-base: 16px;
+  --space-lg: 20px;
+  --space-xl: 24px;
+  --space-2xl: 32px;
+  --space-3xl: 40px;
+  --space-4xl: 48px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows (dark theme) */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px rgba(0, 168, 255, 0.2);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  /* Layout */
+  --sidebar-width: 260px;
+  --sidebar-collapsed: 72px;
+  --topbar-height: 64px;
+}
