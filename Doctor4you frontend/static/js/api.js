@@ -1,4 +1,4 @@
-const BASE_URL = "http://127.0.0.1:8000";
+import BASE_URL from './config.js';
 
 // Analyze symptoms
 export async function analyzeSymptoms(text) {
