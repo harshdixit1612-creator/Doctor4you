@@ -15,12 +15,12 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /app
 
-# Install Python dependencies first (caches this layer)
-COPY requirements.txt .
+# Copy requirements from health_tracker (relative to repo root context)
+COPY health_tracker/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy app source
-COPY . .
+# Copy all app source from health_tracker
+COPY health_tracker/ .
 
 # Expose port
 EXPOSE 8000

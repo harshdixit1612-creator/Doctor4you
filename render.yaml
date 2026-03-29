@@ -3,8 +3,5 @@ services:
     name: doctor4you-backend
     runtime: docker
     dockerfilePath: health_tracker/Dockerfile
-    dockerContext: health_tracker
+    dockerContext: .
     plan: free
-    envVars:
-      - key: PORT
-        value: "8000"
