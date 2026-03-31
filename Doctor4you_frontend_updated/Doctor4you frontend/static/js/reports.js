@@ -5,6 +5,17 @@ import { renderLayout } from './sidebar.js';
 export function renderReports() {
   const reports = storage.get('healthvault_reports') || [];
 
+  // Add sample reports if empty
+  if (reports.length === 0) {
+    const sampleReports = [
+      { id: generateId(), name: 'Blood Work Analysis.pdf', size: 2457600, type: 'application/pdf', uploadDate: '2026-03-18T10:30:00Z' },
+      { id: generateId(), name: 'Full Body Checkup.pdf', size: 4194304, type: 'application/pdf', uploadDate: '2026-03-10T14:20:00Z' },
+      { id: generateId(), name: 'X-Ray Report.png', size: 1048576, type: 'image/png', uploadDate: '2026-02-25T09:15:00Z' },
+    ];
+    storage.set('healthvault_reports', sampleReports);
+    reports.push(...sampleReports);
+  }
+
   const pageContent = `
     <div class="page-header">
       <h2><i class="fa-solid fa-file-medical" style="color:var(--primary);margin-right:10px;"></i>Reports History</h2>
@@ -28,33 +39,30 @@ export function renderReports() {
     </div>
 
     <!-- Reports List -->
-    <div style="display:flex; flex-direction:column; gap:0;">
+    <div class="reports-grid stagger-children">
       ${reports.length === 0 ? `
-        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; color:var(--text-muted); text-align:center;">
-          <i class="fa-solid fa-folder-open" style="font-size:48px; margin-bottom:16px; opacity:0.4;"></i>
-          <h3 style="color:var(--text); margin-bottom:8px;">No reports yet</h3>
-          <p>Upload your health reports via the <strong>Report Analyzer</strong> to track them here.</p>
+        <div class="empty-state">
+          <i class="fa-solid fa-folder-open"></i>
+          <h3>No reports uploaded</h3>
+          <p>Upload your health reports to track and access them anytime.</p>
         </div>
       ` : reports.map(report => {
         const isPdf = report.type === 'application/pdf';
-        const scoreColor = !report.score ? 'var(--primary)' : (report.score < 50 ? '#ff4757' : report.score < 80 ? '#ffa502' : '#2ed573');
         return `
-          <div data-id="${report.id}" style="display:flex; align-items:center; gap:16px; background:var(--card-bg, #131c36); padding:18px 20px; border-radius:14px; border:1px solid rgba(255,255,255,0.08); margin-bottom:12px; box-shadow:0 2px 12px rgba(0,0,0,0.2);">
-            <div style="width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; background:${isPdf ? 'rgba(255,71,87,0.15)' : 'rgba(0,168,255,0.15)'};">
-              <i class="fa-solid ${isPdf ? 'fa-file-pdf' : 'fa-file-image'}" style="font-size:20px; color:${isPdf ? '#ff4757' : '#00a8ff'};"></i>
+          <div class="report-item" data-id="${report.id}">
+            <div class="report-icon ${isPdf ? 'pdf' : 'image'}">
+              <i class="fa-solid ${isPdf ? 'fa-file-pdf' : 'fa-file-image'}"></i>
             </div>
-            <div style="flex:1; min-width:0;">
-              <div style="font-weight:600; font-size:14px; color:#e2e8f0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${report.name}</div>
-              <div style="font-size:12px; color:#64748b; margin-top:3px;">${formatDate(report.uploadDate)} &bull; ${formatFileSize(report.size)}</div>
+            <div class="report-info">
+              <h4>${report.name}</h4>
+              <p>${formatDate(report.uploadDate)} • ${formatFileSize(report.size)}</p>
             </div>
-            ${report.score !== undefined ? `
-            <div style="padding:6px 14px; background:rgba(255,255,255,0.05); border-radius:20px; text-align:center; flex-shrink:0; border:1px solid rgba(255,255,255,0.08);">
-              <div style="font-size:10px; color:#64748b; margin-bottom:2px;">Score</div>
-              <div style="font-size:16px; font-weight:700; color:${scoreColor};">${report.score}</div>
-            </div>` : ''}
-            <div style="display:flex; gap:6px; flex-shrink:0;">
-              <button title="Delete" data-delete-report="${report.id}" style="width:36px; height:36px; border-radius:8px; border:1px solid rgba(255,71,87,0.3); background:rgba(255,71,87,0.1); color:#ff4757; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s;">
-                <i class="fa-solid fa-trash-can" style="font-size:13px;"></i>
+            <div class="report-actions">
+              <button class="btn btn-ghost btn-sm" title="Download">
+                <i class="fa-solid fa-download"></i>
+              </button>
+              <button class="btn btn-ghost btn-sm" title="Delete" data-delete-report="${report.id}">
+                <i class="fa-solid fa-trash-can" style="color:var(--danger);"></i>
               </button>
             </div>
           </div>

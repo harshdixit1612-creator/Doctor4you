@@ -16,7 +16,7 @@ export function renderLogin() {
             <div class="visual-brand-icon">
               <i class="fa-solid fa-heart-pulse"></i>
             </div>
-            <span>Doctor4you</span>
+            <span>HealthVault</span>
           </div>
 
           <div class="floating-elements">
@@ -202,7 +202,7 @@ export function renderSignup() {
             <div class="visual-brand-icon">
               <i class="fa-solid fa-heart-pulse"></i>
             </div>
-            <span>Doctor4you</span>
+            <span>HealthVault</span>
           </div>
 
           <div class="floating-elements">
@@ -232,7 +232,7 @@ export function renderSignup() {
 
           <div class="visual-tagline">
             <h2>Start Your<br/><span>Health Journey</span></h2>
-            <p>Join thousands who trust Doctor4you to monitor and improve their health every day.</p>
+            <p>Join thousands who trust HealthVault to monitor and improve their health every day.</p>
           </div>
 
           <div class="visual-features">
@@ -451,7 +451,7 @@ export function renderSignup() {
       storage.set('healthvault_reports', reports);
     }
 
-    showToast('Account created! Welcome to Doctor4you 🎉', 'success');
+    showToast('Account created! Welcome to HealthVault 🎉', 'success');
     // Auto-login the new user
     storage.set('healthvault_user', user);
     // Show health check-in modal (upload report + basic questions)

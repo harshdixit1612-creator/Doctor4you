@@ -14,7 +14,7 @@ export function renderLanding() {
         <div class="landing-nav-inner">
           <div class="landing-brand">
             <i class="fa-solid fa-heart-pulse"></i>
-            <span>Doctor4you</span>
+            <span>HealthVault</span>
           </div>
           <div class="landing-nav-links">
             <a href="#features" class="nav-link">Features</a>
@@ -71,7 +71,7 @@ export function renderLanding() {
                 <span style="background:#ffbd2e"></span>
                 <span style="background:#28ca41"></span>
               </div>
-              <div class="preview-title">Doctor4you Dashboard</div>
+              <div class="preview-title">HealthVault Dashboard</div>
             </div>
             <div class="preview-body">
               <div class="preview-stat-row">
@@ -213,19 +213,19 @@ export function renderLanding() {
       <section class="stats-section" id="stats">
         <div class="stats-grid">
           <div class="stat-item">
-            <div class="stat-number"><i class="fa-solid fa-users" style="font-size:1.8rem;color:#00a8ff;display:block;margin-bottom:8px;"></i>2K+</div>
+            <div class="stat-number">2K+</div>
             <div class="stat-label">Active Users</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number"><i class="fa-solid fa-file-waveform" style="font-size:1.8rem;color:#00ffc8;display:block;margin-bottom:8px;"></i>50K+</div>
+            <div class="stat-number">50K+</div>
             <div class="stat-label">Reports Analyzed</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number"><i class="fa-solid fa-bullseye" style="font-size:1.8rem;color:#ffa502;display:block;margin-bottom:8px;"></i>98%</div>
+            <div class="stat-number">98%</div>
             <div class="stat-label">Accuracy Rate</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number"><i class="fa-solid fa-satellite-dish" style="font-size:1.8rem;color:#7467f0;display:block;margin-bottom:8px;"></i>24/7</div>
+            <div class="stat-number">24/7</div>
             <div class="stat-label">Health Monitoring</div>
           </div>
         </div>
@@ -235,7 +235,7 @@ export function renderLanding() {
       <section class="cta-section">
         <div class="cta-content">
           <h2>Ready to Take Control of<br/>Your <span class="gradient-text">Health?</span></h2>
-          <p>Join thousands of users who trust Doctor4you for smarter, AI-powered health monitoring.</p>
+          <p>Join thousands of users who trust HealthVault for smarter, AI-powered health monitoring.</p>
           <button class="btn-glow hero-cta" id="ctaSignup">
             <i class="fa-solid fa-rocket"></i> Get Started Free
           </button>
@@ -247,9 +247,9 @@ export function renderLanding() {
         <div class="footer-inner">
           <div class="footer-brand">
             <i class="fa-solid fa-heart-pulse"></i>
-            <span>Doctor4you</span>
+            <span>HealthVault</span>
           </div>
-          <p>© 2026 Doctor4you. All rights reserved.</p>
+          <p>© 2026 HealthVault. All rights reserved.</p>
           <div class="footer-links">
             <a href="#">Privacy</a>
             <a href="#">Terms</a>

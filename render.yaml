@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: doctor4you-backend
-    runtime: docker
-    dockerfilePath: health_tracker/Dockerfile
-    dockerContext: .
-    plan: free

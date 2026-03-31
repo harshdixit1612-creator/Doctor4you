@@ -15,7 +15,6 @@ export function renderLayout(pageContent) {
     { path: '/disease', icon: 'fa-stethoscope', label: 'Your Diseases' },
     { path: '/daily-health', icon: 'fa-calendar-check', label: 'Daily Health' },
     { path: '/medicine', icon: 'fa-pills', label: 'Medicine Reminder' },
-    { path: '/report-analyzer', icon: 'fa-file-waveform', label: 'Report Analyzer' },
     { path: '/reports', icon: 'fa-file-medical', label: 'Reports History' },
   ];
 
@@ -24,7 +23,6 @@ export function renderLayout(pageContent) {
     '/disease': 'Your Diseases',
     '/daily-health': 'Daily Health Update',
     '/medicine': 'Medicine Reminders',
-    '/report-analyzer': 'OCR Report Analysis',
     '/reports': 'Reports History',
     '/profile': 'My Profile'
   };
@@ -35,7 +33,7 @@ export function renderLayout(pageContent) {
         <div class="sidebar-header">
           <div class="sidebar-logo">
             <i class="fa-solid fa-heart-pulse"></i>
-            <span>Doctor4you</span>
+            <span>HealthVault</span>
           </div>
         </div>
 

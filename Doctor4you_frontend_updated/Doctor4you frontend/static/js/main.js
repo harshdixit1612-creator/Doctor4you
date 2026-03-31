@@ -11,7 +11,6 @@ import { renderDailyHealth } from './daily-health.js';
 import { renderMedicine } from './medicine.js';
 import { renderReports } from './reports.js';
 import { renderProfile } from './profile.js';
-import { renderReportAnalyzer } from './report-analyzer.js';
 
 
 // Auth guard wrapper
@@ -61,7 +60,6 @@ registerRoute('/disease', authGuard(renderDisease));
 registerRoute('/daily-health', authGuard(renderDailyHealth));
 registerRoute('/medicine', authGuard(renderMedicine));
 registerRoute('/reports', authGuard(renderReports));
-registerRoute('/report-analyzer', authGuard(renderReportAnalyzer));
 registerRoute('/profile', authGuard(renderProfile));
 
 

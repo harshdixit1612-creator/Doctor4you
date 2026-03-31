@@ -1,31 +1,33 @@
 // ===== Dashboard Page =====
-
 import { getCurrentUser, generateSampleHealthData, getInitials, storage } from './utils.js';
 import { renderLayout } from './sidebar.js';
-import { renderTasksWidget, loadTodayTasks, saveTodayTasks } from './tasks.js';
-
-
 
 export function renderDashboard() {
-  const user = getCurrentUser();
-  const healthData = storage.get('healthvault_health_data') || generateSampleHealthData();
+  const user        = getCurrentUser();
+  const healthData  = storage.get('healthvault_health_data') || generateSampleHealthData();
   storage.set('healthvault_health_data', healthData);
 
   const latestData = healthData[healthData.length - 1];
-  const prevData = healthData[healthData.length - 2] || latestData;
+  const prevData   = healthData[healthData.length - 2] || latestData;
 
-  // Calculate trends
   const scoreTrend = latestData.healthScore - prevData.healthScore;
-  const bpTrend = latestData.bp_systolic - prevData.bp_systolic;
+  const bpTrend    = latestData.bp_systolic - prevData.bp_systolic;
   const sugarTrend = latestData.sugar - prevData.sugar;
 
   const getStatus = (score) => {
     if (score >= 85) return { text: 'Excellent', class: 'badge-success' };
-    if (score >= 70) return { text: 'Good', class: 'badge-primary' };
-    if (score >= 55) return { text: 'Moderate', class: 'badge-warning' };
+    if (score >= 70) return { text: 'Good',      class: 'badge-primary' };
+    if (score >= 55) return { text: 'Moderate',  class: 'badge-warning' };
     return { text: 'Needs Attention', class: 'badge-danger' };
   };
   const status = getStatus(latestData.healthScore);
+
+  // Get latest AI result if available
+  const aiResult   = storage.get('healthvault_last_ai_result');
+  const condition  = aiResult?.diagnosis?.condition;
+  const aiTrend    = aiResult?.progress?.trend;
+  const dailyLogs  = storage.get('healthvault_daily_logs') || [];
+  const lastLog    = dailyLogs[dailyLogs.length - 1];
 
   const pageContent = `
     <!-- Welcome Banner -->
@@ -34,7 +36,7 @@ export function renderDashboard() {
         <h2>Welcome Back, <span>${user?.name?.split(' ')[0] || 'User'}</span></h2>
         <p>Your health insights at a glance. Stay on top of your wellness journey.</p>
         <button class="btn btn-secondary" onclick="location.hash='#/daily-health'" style="background:rgba(255,255,255,0.2);color:#fff;border:1.5px solid rgba(255,255,255,0.3);">
-          <i class="fa-solid fa-plus"></i> Log Today's Health
+          <i class="fa-solid fa-brain"></i> Analyze Symptoms with AI
         </button>
       </div>
       <div class="welcome-avatar">
@@ -89,12 +91,39 @@ export function renderDashboard() {
       </div>
     </div>
 
-    <!-- Tasks Widget -->
-    <div style="margin-bottom: 32px; display: block;">
-      ${renderTasksWidget()}
-    </div>
+    <!-- AI Result Banner (shown if AI analysis done) -->
+    ${condition ? `
+    <div class="card fade-in" style="margin-bottom:var(--space-xl);background:linear-gradient(135deg,rgba(14,165,115,0.1),rgba(14,165,233,0.08));border-color:rgba(14,165,115,0.3);">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#0EA573,#0ea5e9);display:flex;align-items:center;justify-content:center;font-size:20px;">🤖</div>
+          <div>
+            <div style="font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#0EA573;">LATEST AI DIAGNOSIS</div>
+            <div style="font-weight:700;font-size:0.95rem;margin-top:2px;">${condition}</div>
+            ${aiTrend ? `<div style="font-size:0.8rem;color:${aiTrend === 'improving' ? '#0EA573' : aiTrend === 'worsening' ? 'var(--danger)' : 'var(--warning)'};">Trend: ${aiTrend}</div>` : ''}
+          </div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="location.hash='#/disease'">
+          View Full Report <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>` : `
+    <div class="card fade-in" style="margin-bottom:var(--space-xl);background:rgba(14,165,115,0.05);border-color:rgba(14,165,115,0.2);border-style:dashed;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="font-size:28px;">🤖</div>
+          <div>
+            <div style="font-weight:700;">Try AI Symptom Analysis</div>
+            <div style="font-size:0.82rem;color:var(--text-muted);">Describe your symptoms and get a personalized diagnosis, medicines, diet plan & daily routine.</div>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="location.hash='#/daily-health'">
+          Analyze Now <i class="fa-solid fa-brain"></i>
+        </button>
+      </div>
+    </div>`}
 
-    <!-- Chart + Insights Grid -->
+    <!-- Chart + Insights -->
     <div class="dashboard-grid">
       <div class="chart-card fade-in">
         <div class="chart-header">
@@ -162,24 +191,26 @@ export function renderDashboard() {
         <button class="btn btn-ghost btn-sm">View All</button>
       </div>
       <div class="activity-list">
+        ${lastLog ? `
         <div class="activity-item">
           <span class="activity-dot green"></span>
           <div class="activity-info">
-            <p>Daily health data logged successfully</p>
-            <small>Today, 9:30 AM</small>
+            <p>Health data logged${lastLog.symptoms ? ` — "${lastLog.symptoms.slice(0,50)}${lastLog.symptoms.length > 50 ? '...' : ''}"` : ''}</p>
+            <small>${new Date(lastLog.date).toLocaleString()}</small>
           </div>
-        </div>
+        </div>` : ''}
+        ${condition ? `
         <div class="activity-item">
           <span class="activity-dot blue"></span>
           <div class="activity-info">
-            <p>Health report uploaded — Blood Work Analysis.pdf</p>
-            <small>Yesterday, 2:15 PM</small>
+            <p>AI Diagnosis: ${condition.slice(0,60)}${condition.length > 60 ? '...' : ''}</p>
+            <small>Latest analysis</small>
           </div>
-        </div>
+        </div>` : ''}
         <div class="activity-item">
           <span class="activity-dot orange"></span>
           <div class="activity-info">
-            <p>Medicine reminder set — Metformin 500mg</p>
+            <p>Medicine reminder set — Paracetamol 650mg</p>
             <small>2 days ago</small>
           </div>
         </div>
@@ -195,57 +226,6 @@ export function renderDashboard() {
   `;
 
   renderLayout(pageContent);
-
-  // ── Task checkbox interactions ──────────────────────────────────────────
-  setTimeout(() => {
-    document.querySelectorAll('.task-checkbox').forEach(cb => {
-      cb.addEventListener('change', () => {
-        const id   = cb.dataset.id;
-        const tasks = loadTodayTasks();
-        if (!tasks) return;
-        const task = tasks.find(t => t.id === id);
-        if (task) {
-          task.done = cb.checked;
-          saveTodayTasks(tasks);
-          const item = cb.closest('.task-item');
-          if (item) item.classList.toggle('task-done', cb.checked);
-
-          // Update progress counter live
-          const done  = tasks.filter(t => t.done).length;
-          const total = tasks.length;
-          const pct   = Math.round((done / total) * 100);
-          const lbl   = document.querySelector('.tasks-progress-label');
-          const fill  = document.querySelector('.tasks-progress-fill');
-          if (lbl)  lbl.textContent   = `${done}/${total} done`;
-          if (fill) fill.style.width  = `${pct}%`;
-
-          // Live visual health score update
-          let localHealthData = storage.get('healthvault_health_data');
-          if (localHealthData && localHealthData.length > 0) {
-            let lastDay = localHealthData[localHealthData.length - 1];
-            if (cb.checked) {
-              lastDay.healthScore = Math.min(100, lastDay.healthScore + 2);
-            } else {
-              lastDay.healthScore = Math.max(0, lastDay.healthScore - 2);
-            }
-            storage.set('healthvault_health_data', localHealthData);
-            
-            // Re-render score visually
-            const scoreCards = document.querySelectorAll('.stat-card h3');
-            if (scoreCards.length > 0) scoreCards[0].innerText = lastDay.healthScore;
-            
-            // Update chart graph instantly
-            if (window.healthChartInstance) {
-              window.healthChartInstance.data.datasets[0].data = localHealthData.map(d => d.healthScore);
-              window.healthChartInstance.update();
-            }
-          }
-        }
-      });
-    });
-  }, 50);
-
-  // Initialize Chart
   setTimeout(() => initHealthChart(healthData), 100);
 }
 
@@ -258,9 +238,7 @@ function initHealthChart(healthData) {
     return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   });
 
-  if (window.healthChartInstance) window.healthChartInstance.destroy();
-
-  window.healthChartInstance = new Chart(canvas, {
+  new Chart(canvas, {
     type: 'line',
     data: {
       labels,
@@ -270,81 +248,43 @@ function initHealthChart(healthData) {
           data: healthData.map(d => d.healthScore),
           borderColor: '#0EA573',
           backgroundColor: 'rgba(14, 165, 115, 0.08)',
-          fill: true,
-          tension: 0.4,
-          pointBackgroundColor: '#0EA573',
-          pointBorderColor: '#fff',
-          pointBorderWidth: 2,
-          pointRadius: 5,
-          pointHoverRadius: 7,
-          borderWidth: 3,
+          fill: true, tension: 0.4,
+          pointBackgroundColor: '#0EA573', pointBorderColor: '#fff',
+          pointBorderWidth: 2, pointRadius: 5, pointHoverRadius: 7, borderWidth: 3,
         },
         {
           label: 'Sugar Level',
           data: healthData.map(d => d.sugar),
           borderColor: '#F59E0B',
           backgroundColor: 'rgba(245, 158, 11, 0.05)',
-          fill: true,
-          tension: 0.4,
-          pointBackgroundColor: '#F59E0B',
-          pointBorderColor: '#fff',
-          pointBorderWidth: 2,
-          pointRadius: 4,
-          pointHoverRadius: 6,
-          borderWidth: 2,
-          borderDash: [5, 5],
+          fill: true, tension: 0.4,
+          pointBackgroundColor: '#F59E0B', pointBorderColor: '#fff',
+          pointBorderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
+          borderWidth: 2, borderDash: [5, 5],
         }
       ]
     },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: {
-        mode: 'index',
-        intersect: false,
-      },
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
       plugins: {
         legend: {
-          position: 'top',
-          align: 'end',
-          labels: {
-            usePointStyle: true,
-            pointStyle: 'circle',
-            padding: 20,
-            font: { family: 'Inter', size: 12, weight: '500' }
-          }
+          position: 'top', align: 'end',
+          labels: { usePointStyle: true, pointStyle: 'circle', padding: 20, font: { family: 'Inter', size: 12, weight: '500' } }
         },
         tooltip: {
           backgroundColor: '#1E293B',
           titleFont: { family: 'Inter', size: 13, weight: '600' },
           bodyFont: { family: 'Inter', size: 12 },
-          padding: 12,
-          cornerRadius: 10,
-          displayColors: true,
-          boxPadding: 4,
+          padding: 12, cornerRadius: 10, displayColors: true, boxPadding: 4,
         }
       },
       scales: {
-        x: {
-          grid: { display: false },
-          ticks: {
-            font: { family: 'Inter', size: 11 },
-            color: '#94A3B8'
-          }
-        },
+        x: { grid: { display: false }, ticks: { font: { family: 'Inter', size: 11 }, color: '#94A3B8' } },
         y: {
-          beginAtZero: false,
-          min: 40,
-          max: 160,
-          grid: {
-            color: 'rgba(0,0,0,0.04)',
-            drawBorder: false,
-          },
-          ticks: {
-            font: { family: 'Inter', size: 11 },
-            color: '#94A3B8',
-            stepSize: 20
-          }
+          beginAtZero: false, min: 40, max: 160,
+          grid: { color: 'rgba(0,0,0,0.04)', drawBorder: false },
+          ticks: { font: { family: 'Inter', size: 11 }, color: '#94A3B8', stepSize: 20 }
         }
       }
     }
